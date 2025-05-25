@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zip Zip Tavşan - Oyun</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="game-page">
+  <div class="game-container">
+    <!-- Arka plan katmanları -->
+    <img src="{{ url_for('static', filename='tema/background/background_0.png')}}" class="layer layer1">
+    <img src="{{ url_for('static', filename='tema/background/background_1.png')}}" class="layer layer2">
+    <img src="{{ url_for('static', filename='tema/background/background_2.png')}}" class="layer layer3">
+    
+    <!-- templates/game.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body style="margin:0;overflow:hidden">
+    <iframe src="/pygame" width="100%" height="100%" frameborder="0"></iframe>
+</body>
+</html>
+    
+    <!-- Mobil kontroller -->
+    <div class="mobile-controls">
+      <button class="control-btn left-btn">←</button>
+      <button class="control-btn right-btn">→</button>
+      <button class="control-btn jump-btn">Zıpla</button>
+    </div>
+  </div>
+  
+  <script src="{{ url_for('static', filename='game.js') }}"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zip Zip Tavşan</title>
+    <style>
+        body { margin:0; background:#222; }
+        #game-frame { 
+            width:100vw; height:100vh; 
+            border:none; display:block;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="game-frame" src="/pygame"></iframe>
+</body>
+</html>
