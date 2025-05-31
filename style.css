@@ -52,13 +52,9 @@ h1 {
   transition: transform 0.3s ease;
 }
 
-.character {
-  animation: hop 1.5s infinite alternate;
-}
-
 /* FARE ÜZERİNDEYKEN ANİMASYON */
-.character-rotate:hover.character {
-  animation:rotate(360 deg) cubic-bezier(0.075, 0.82, 0.165, 1);
+.character-container:hover .character {
+  animation: hop 1.5s infinite alternate;
 }
 
 /* DİĞER STİLLER (Aynı) */
@@ -176,43 +172,4 @@ h1 {
     /* Mobilde sürekli animasyon */
   }
 }
-/* static/style.css'e ekle */
-.game-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    border: 3px solid #FFD700;
-    border-radius: 10px;
-    overflow: hidden;
-}
 
-iframe {
-    width: 100%;
-    height: 700px;
-    display: block;
-}
-/* Ana sayfa stilleri aynen kalacak */
-.home-page {
-    background: url('./JumpJumpRabbit/tema/example.png') no-repeat center center fixed;
-    background-size: cover;
-    /* Diğer stiller... */
-}
-
-/* Yeni oyun sayfası stilleri */
-.game-container {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    margin: 20px auto;
-    border: 3px solid #FFD700;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-/* Mobil kontroller */
-@media (max-width: 600px) {
-    .game-container {
-        max-width: 100%;
-        height: 80vh;
-    }
-}
