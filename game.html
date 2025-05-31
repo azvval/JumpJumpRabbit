@@ -1,14 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jump Jump Rabbit- Web Oyunu</title>
+    <title>Havuç Topla - Web Oyunu</title>
+    <meta
+      name="description"
+      content="Python pygame ile yapılmış platform oyunu - Web tarayıcısında oyna!"
+    />
     <style>
+      * {
+        box-sizing: border-box;
+      }
       body {
         margin: 0;
         padding: 20px;
-        font-family: 'Arial', sans-serif;
+        font-family: "Arial", sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         min-height: 100vh;
@@ -24,19 +31,19 @@
       h1 {
         font-size: 2.5em;
         margin-bottom: 20px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        background: linear-gradient(45deg, #FFD700, #FFA500);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        background: linear-gradient(45deg, #ffd700, #ffa500);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
       .game-info {
-        background: rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.1);
         padding: 20px;
         border-radius: 15px;
         margin-bottom: 20px;
         backdrop-filter: blur(10px);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       }
       .controls {
         display: flex;
@@ -46,7 +53,7 @@
         margin: 20px 0;
       }
       button {
-        background: linear-gradient(45deg, #4CAF50, #45a049);
+        background: linear-gradient(45deg, #4caf50, #45a049);
         color: white;
         border: none;
         padding: 15px 30px;
@@ -55,11 +62,11 @@
         border-radius: 25px;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       }
       button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
       }
       button:disabled {
         background: #cccccc;
@@ -70,7 +77,7 @@
       #gameCanvas {
         border: 3px solid white;
         border-radius: 15px;
-        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
         background: white;
         max-width: 100%;
       }
@@ -83,7 +90,7 @@
         flex-direction: column;
       }
       .spinner {
-        border: 4px solid rgba(255,255,255,0.3);
+        border: 4px solid rgba(255, 255, 255, 0.3);
         border-radius: 50%;
         border-top: 4px solid white;
         width: 40px;
@@ -92,8 +99,12 @@
         margin-bottom: 20px;
       }
       @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
       .status {
         margin: 15px 0;
@@ -101,20 +112,20 @@
         font-size: 18px;
         padding: 10px;
         border-radius: 10px;
-        background: rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.1);
       }
       .error {
         color: #ff6b6b;
-        background: rgba(255,0,0,0.2);
+        background: rgba(255, 0, 0, 0.2);
         padding: 15px;
         border-radius: 10px;
         margin: 10px 0;
         border: 2px solid #ff6b6b;
       }
       .success {
-        color: #4CAF50;
-        background: rgba(76,175,80,0.2);
-        border: 2px solid #4CAF50;
+        color: #4caf50;
+        background: rgba(76, 175, 80, 0.2);
+        border: 2px solid #4caf50;
       }
       .instructions {
         display: grid;
@@ -123,14 +134,25 @@
         margin: 20px 0;
       }
       .instruction-item {
-        background: rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.1);
         padding: 15px;
         border-radius: 10px;
         text-align: left;
       }
       .instruction-item h4 {
         margin: 0 0 10px 0;
-        color: #FFD700;
+        color: #ffd700;
+      }
+      .debug-info {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px;
+        border-radius: 5px;
+        margin: 10px 0;
+        font-family: monospace;
+        font-size: 12px;
+        max-height: 200px;
+        overflow-y: auto;
+        text-align: left;
       }
       @media (max-width: 768px) {
         .container {
@@ -148,7 +170,7 @@
   <body>
     <div class="container">
       <h1>🥕 Havuç Topla Oyunu</h1>
-      
+
       <div class="game-info">
         <div class="instructions">
           <div class="instruction-item">
@@ -168,544 +190,655 @@
             <p>Havuçları topla ve mümkün olduğunca yükseğe çık!</p>
           </div>
         </div>
-        <p><strong>⚠️ Dikkat:</strong> Platformlar zaman içinde kırılır, hızlı ol!</p>
+        <p>
+          <strong>⚠️ Dikkat:</strong> Platformlar zaman içinde kırılır, hızlı
+          ol!
+        </p>
       </div>
 
       <div class="controls">
-        <button id="loadGame">Oyunu Yükle</button>
+        <button id="loadGame">Python Runtime Yükle</button>
         <button id="startGame" disabled>Oyunu Başlat</button>
         <button id="stopGame" disabled>Oyunu Durdur</button>
+        <button id="debugBtn">Debug Bilgilerini Göster</button>
       </div>
 
       <div id="status" class="status">Python runtime henüz yüklenmedi</div>
-      <div id="error" class="error" style="display: none;"></div>
+      <div id="error" class="error" style="display: none"></div>
+      <div id="debugInfo" class="debug-info" style="display: none"></div>
 
       <div id="gameContainer">
         <div id="loading" class="loading">
           <div class="spinner"></div>
           <div>Python runtime yükleniyor...</div>
+          <div style="font-size: 14px; margin-top: 10px">
+            Bu işlem 10-30 saniye sürebilir...
+          </div>
         </div>
-        <canvas id="gameCanvas" width="400" height="700" style="display: none;"></canvas>
+        <canvas
+          id="gameCanvas"
+          width="400"
+          height="700"
+          style="display: none"
+        ></canvas>
       </div>
     </div>
 
     <script>
-      let pyodide = null;
-      let gameRunning = false;
-      let gameLoopId = null;
+            let pyodide = null;
+            let gameRunning = false;
+            let gameLoopId = null;
+            let debugMode = false;
 
-      const loadBtn = document.getElementById('loadGame');
-      const startBtn = document.getElementById('startGame');
-      const stopBtn = document.getElementById('stopGame');
-      const statusDiv = document.getElementById('status');
-      const errorDiv = document.getElementById('error');
-      const loadingDiv = document.getElementById('loading');
-      const canvas = document.getElementById('gameCanvas');
+            const loadBtn = document.getElementById('loadGame');
+            const startBtn = document.getElementById('startGame');
+            const stopBtn = document.getElementById('stopGame');
+            const debugBtn = document.getElementById('debugBtn');
+            const statusDiv = document.getElementById('status');
+            const errorDiv = document.getElementById('error');
+            const debugDiv = document.getElementById('debugInfo');
+            const loadingDiv = document.getElementById('loading');
+            const canvas = document.getElementById('gameCanvas');
 
-      // Python runtime yükleme
-      async function loadPyodide() {
-        try {
-          loadBtn.disabled = true;
-          statusDiv.textContent = 'Python runtime yükleniyor...';
-          statusDiv.className = 'status';
-          
-          // Pyodide script'ini yükle
-          const script = document.createElement('script');
-          script.src = 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js';
-          document.head.appendChild(script);
+            function debugLog(message) {
+              console.log(message);
+              if (debugMode) {
+                const timestamp = new Date().toLocaleTimeString();
+                debugDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+                debugDiv.scrollTop = debugDiv.scrollHeight;
+              }
+            }
 
-          await new Promise((resolve, reject) => {
-            script.onload = resolve;
-            script.onerror = reject;
-          });
+            debugBtn.addEventListener('click', () => {
+              debugMode = !debugMode;
+              debugDiv.style.display = debugMode ? 'block' : 'none';
+              debugBtn.textContent = debugMode ? 'Debug Gizle' : 'Debug Göster';
+              if (debugMode) {
+                debugLog('Debug modu aktif');
+              }
+            });
 
-          // Pyodide başlat
-          statusDiv.textContent = 'Python ortamı başlatılıyor...';
-          pyodide = await loadPyodide({
-            indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/',
-            stdout: (text) => console.log('Python:', text),
-            stderr: (text) => console.error('Python error:', text)
-          });
+            // Python runtime yükleme
+            async function loadPyodide() {
+              try {
+                loadBtn.disabled = true;
+                statusDiv.textContent = 'Python runtime yükleniyor...';
+                statusDiv.className = 'status';
+                debugLog('Pyodide yükleme başladı');
 
-          // Pygame yükle
-          statusDiv.textContent = 'Pygame kütüphanesi yükleniyor...';
-          await pyodide.loadPackage(['pygame']);
+                // Önce internet bağlantısını test et
+                try {
+                  const testResponse = await fetch('https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js', { method: 'HEAD' });
+                  if (!testResponse.ok) {
+                    throw new Error('CDN erişimi başarısız');
+                  }
+                  debugLog('CDN erişimi başarılı');
+                } catch (e) {
+                  debugLog('CDN test hatası: ' + e.message);
+                  throw new Error('İnternet bağlantısı veya CDN erişim sorunu: ' + e.message);
+                }
 
-          statusDiv.textContent = 'Hazır! Oyunu başlatabilirsiniz.';
-          statusDiv.className = 'status success';
-          startBtn.disabled = false;
-          loadingDiv.style.display = 'none';
-          canvas.style.display = 'block';
+                // Pyodide script'ini yükle (daha yeni versiyon)
+                if (!window.loadPyodide) {
+                  statusDiv.textContent = 'Pyodide kütüphanesi indiriliyor...';
+                  const script = document.createElement('script');
+                  script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+                  script.crossOrigin = 'anonymous';
 
-        } catch (error) {
-          console.error('Python yükleme hatası:', error);
-          showError('Python runtime yüklenemedi. İnternet bağlantınızı kontrol edin: ' + error.message);
-          statusDiv.textContent = 'Yükleme başarısız';
-          loadBtn.disabled = false;
-        }
-      }
+                  await new Promise((resolve, reject) => {
+                    script.onload = () => {
+                      debugLog('Pyodide script yüklendi');
+                      resolve();
+                    };
+                    script.onerror = (e) => {
+                      debugLog('Script yükleme hatası: ' + e.message);
+                      reject(new Error('Pyodide script yüklenemedi'));
+                    };
+                    document.head.appendChild(script);
+                  });
+                }
 
-      // Oyunu başlat
-      async function startGame() {
-        if (!pyodide || gameRunning) return;
+                // Pyodide başlat
+                statusDiv.textContent = 'Python ortamı başlatılıyor...';
+                debugLog('Pyodide başlatılıyor');
 
-        try {
-          gameRunning = true;
-          startBtn.disabled = true;
-          stopBtn.disabled = false;
-          statusDiv.textContent = 'Oyun başlatılıyor...';
+                pyodide = await loadPyodide({
+                  indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/',
+                  stdout: (text) => {
+                    debugLog('Python stdout: ' + text);
+                  },
+                  stderr: (text) => {
+                    debugLog('Python stderr: ' + text);
+                    console.error('Python stderr:', text);
+                  }
+                });
 
-          // Canvas context'i al
-          const ctx = canvas.getContext('2d');
-          
-          // Python pygame kodunu çalıştır
-          await pyodide.runPython(\
-import pygame
-import random
-import sys
-import js
+                debugLog('Pyodide başarıyla yüklendi');
 
-# Canvas'a erişim
-canvas = js.document.getElementById('gameCanvas')
-ctx = canvas.getContext('2d')
+                // Pygame yükle
+                statusDiv.textContent = 'Pygame kütüphanesi yükleniyor...';
+                debugLog('Pygame yükleniyor');
 
-# Initialize Pygame
-pygame.init()
+                try {
+                  await pyodide.loadPackage(['pygame']);
+                  debugLog('Pygame başarıyla yüklendi');
+                } catch (e) {
+                  debugLog('Pygame yükleme hatası: ' + e.message);
+                  // Pygame yüklenemezse basit mock ile devam et
+                  console.warn('Pygame yüklenemedi, mock kullanılacak');
+                }
 
-# Oyun ayarları
-GENISLIK = 400
-YUKSEKLIK = 700
-FPS = 60
+                statusDiv.textContent = 'Hazır! Oyunu başlatabilirsiniz.';
+                statusDiv.className = 'status success';
+                startBtn.disabled = false;
+                loadingDiv.style.display = 'none';
+                canvas.style.display = 'block';
+                debugLog('Sistem hazır');
 
-# Platform ayarları
-PLATFORM_YUKSEKLIK = 20
-PLATFORM_GENISLIK_UZUN = 120
-PLATFORM_GENISLIK_KISA = 60
+              } catch (error) {
+                debugLog('Genel hata: ' + error.message);
+                console.error('Python yükleme hatası:', error);
+                showError('Python runtime yüklenemedi: ' + error.message + '\\n\\nLütfen:\\n1. İnternet bağlantınızı kontrol edin\\n2. Tarayıcınızı yenileyin\\n3. Farklı bir tarayıcı deneyin');
+                statusDiv.textContent = 'Yükleme başarısız';
+                loadBtn.disabled = false;
+              }
+            }
 
-# Oyuncu ayarları
-OYUNCU_HIZ = 5
-YERCEKIMI = 0.5
-ZIPLAMA_GUCU = -10
-YUKSEK_ZIP_GUCU = -18
-SUPER_ZIP_GUCU = -24
+            // Oyunu başlat
+            async function startGame() {
+              if (!pyodide || gameRunning) return;
 
-# Item ayarları
-HAVUC_GENISLIK = 30
-HAVUC_YUKSEKLIK = 30
+              try {
+                gameRunning = true;
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                statusDiv.textContent = 'Oyun başlatılıyor...';
+                debugLog('Oyun başlatılıyor');
 
-# Platform kırılma ayarları
-KIRILMA_SURESI = 2500
-KIRILMA_HIZLANMA = 20
-MIN_KIRILMA_SURESI = 800
+                // Canvas context'i al
+                const ctx = canvas.getContext('2d');
 
-# Renkler
-GOK_MAVISI = (135, 206, 235)
-BEYAZ = (255, 255, 255)
-HAVUC_RENGI = (255, 165, 0)
-YESIL = (34, 139, 34)
-KIRMIZI = (220, 20, 60)
-MAVI = (30, 144, 255)
-ACIK_YESIL = (144, 238, 144)
+                // Python pygame kodunu çalıştır
+                await pyodide.runPython(\`
+      import sys
+      import random
+      try:
+          import pygame
+          pygame_available = True
+      except ImportError:
+          pygame_available = False
+          print("Pygame bulunamadı, mock kullanılacak")
 
-# Web klavye durumu
-keys_pressed = set()
-keys_just_pressed = set()
+      # JavaScript modüllerine erişim
+      import js
 
-def setup_keyboard():
-    def keydown(event):
-        if event.code not in keys_pressed:
-            keys_just_pressed.add(event.code)
-        keys_pressed.add(event.code)
-        event.preventDefault()
-    
-    def keyup(event):
-        keys_pressed.discard(event.code)
-        event.preventDefault()
-    
-    js.document.addEventListener('keydown', keydown)
-    js.document.addEventListener('keyup', keyup)
+      # Canvas'a erişim
+      canvas = js.document.getElementById('gameCanvas')
+      ctx = canvas.getContext('2d')
 
-setup_keyboard()
+      print("Oyun başlatılıyor...")
 
-# Oyuncu sınıfı
-class Oyuncu:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.width = 32
-        self.height = 32
-        self.hiz_y = 0
-        self.yerde_mi = False
-        self.combo = 0
-        self.havuc_sayisi = 0
-        self.son_ziplama = 0
+      # Oyun ayarları
+      GENISLIK = 400
+      YUKSEKLIK = 700
+      FPS = 60
 
-    def guncelle(self, platformlar, itemlar, zaman):
-        global keys_just_pressed
-        
-        # Hareket kontrolleri
-        if 'ArrowLeft' in keys_pressed or 'KeyA' in keys_pressed:
-            self.x -= OYUNCU_HIZ
-        if 'ArrowRight' in keys_pressed or 'KeyD' in keys_pressed:
-            self.x += OYUNCU_HIZ
-        
-        # Sınır kontrolü
-        self.x = max(0, min(self.x, GENISLIK - self.width))
-        
-        # Yerçekimi
-        self.hiz_y += YERCEKIMI
-        self.y += self.hiz_y
-        self.yerde_mi = False
+      # Platform ayarları
+      PLATFORM_YUKSEKLIK = 20
+      PLATFORM_GENISLIK_UZUN = 120
+      PLATFORM_GENISLIK_KISA = 60
 
-        # Platform çarpışması
-        for platform in platformlar:
-            if (self.x < platform.x + platform.width and
-                self.x + self.width > platform.x and
-                self.y < platform.y + platform.height and
-                self.y + self.height > platform.y and
-                self.hiz_y > 0):
-                self.y = platform.y - self.height
-                self.hiz_y = 0
-                self.yerde_mi = True
-                platform.kirilmaya_basla(zaman)
+      # Oyuncu ayarları
+      OYUNCU_HIZ = 5
+      YERCEKIMI = 0.5
+      ZIPLAMA_GUCU = -10
+      YUKSEK_ZIP_GUCU = -18
+      SUPER_ZIP_GUCU = -24
 
-        # Havuç toplama
-        for item in list(itemlar):
-            if (self.x < item.x + item.width and
-                self.x + self.width > item.x and
-                self.y < item.y + item.height and
-                self.y + self.height > item.y):
-                itemlar.remove(item)
-                self.havuc_sayisi += 1
+      # Item ayarları
+      HAVUC_GENISLIK = 30
+      HAVUC_YUKSEKLIK = 30
 
-        # Zıplama kontrolleri
-        zipla_tusları = {'Space', 'KeyW', 'ArrowUp'}
-        if any(key in keys_just_pressed for key in zipla_tusları) and self.yerde_mi:
-            self.zipla()
+      # Platform kırılma ayarları
+      KIRILMA_SURESI = 2500
+      KIRILMA_HIZLANMA = 20
+      MIN_KIRILMA_SURESI = 800
 
-        # Özel zıplama
-        if 'KeyZ' in keys_just_pressed and self.yerde_mi:
-            if self.havuc_sayisi >= 6:
-                self.hiz_y = SUPER_ZIP_GUCU
-                self.havuc_sayisi -= 6
-                self.combo += 1
-            elif self.havuc_sayisi >= 3:
-                self.hiz_y = YUKSEK_ZIP_GUCU
-                self.havuc_sayisi -= 3
-                self.combo += 1
+      # Renkler
+      GOK_MAVISI = (135, 206, 235)
+      BEYAZ = (255, 255, 255)
+      HAVUC_RENGI = (255, 165, 0)
+      YESIL = (34, 139, 34)
+      KIRMIZI = (220, 20, 60)
+      MAVI = (30, 144, 255)
+      ACIK_YESIL = (144, 238, 144)
 
-        # Tuş durumunu temizle
-        keys_just_pressed.clear()
+      # Mock pygame eğer gerekirse
+      if not pygame_available:
+          class MockPygame:
+              def init(self): pass
+              def quit(self): pass
+          pygame = MockPygame()
+          print("Mock pygame kullanılıyor")
 
-    def zipla(self):
-        self.hiz_y = ZIPLAMA_GUCU
-        self.combo += 1
+      # Pygame başlat
+      if pygame_available:
+          pygame.init()
+          print("Pygame başlatıldı")
 
-    def draw(self):
-        # Oyuncu çizimi - gradient efekti
-        ctx.fillStyle = f'rgb({MAVI[0]},{MAVI[1]},{MAVI[2]})'
-        ctx.fillRect(self.x, self.y, self.width, self.height)
-        
-        # Gözler
-        ctx.fillStyle = 'white'
-        ctx.fillRect(self.x + 6, self.y + 8, 6, 6)
-        ctx.fillRect(self.x + 20, self.y + 8, 6, 6)
-        
-        ctx.fillStyle = 'black'
-        ctx.fillRect(self.x + 8, self.y + 10, 2, 2)
-        ctx.fillRect(self.x + 22, self.y + 10, 2, 2)
+      # Web klavye durumu
+      keys_pressed = set()
+      keys_just_pressed = set()
 
-class Platform:
-    def __init__(self, x, y, width, sabit=False):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = PLATFORM_YUKSEKLIK
-        self.sabit = sabit
-        self.kiriliyor = False
-        self.kirilma_baslangic = 0
-        self.orijinal_width = width
+      def setup_keyboard():
+          def keydown(event):
+              if event.code not in keys_pressed:
+                  keys_just_pressed.add(event.code)
+              keys_pressed.add(event.code)
+              event.preventDefault()
 
-    def kirilmaya_basla(self, zaman):
-        if not self.sabit and not self.kiriliyor:
-            self.kiriliyor = True
-            self.kirilma_baslangic = zaman
+          def keyup(event):
+              keys_pressed.discard(event.code)
+              event.preventDefault()
 
-    def guncelle(self, zaman, skor):
-        if self.kiriliyor and not self.sabit:
-            sure = max(MIN_KIRILMA_SURESI, KIRILMA_SURESI - (skor // 1000) * KIRILMA_HIZLANMA)
-            gecen_sure = zaman - self.kirilma_baslangic
-            if gecen_sure > sure:
-                return False  # Platform kırıldı
-            else:
-                # Platform küçülüyor
-                kalan_oran = 1 - (gecen_sure / sure)
-                self.width = max(20, int(self.orijinal_width * kalan_oran))
-        return True
+          js.document.addEventListener('keydown', keydown)
+          js.document.addEventListener('keyup', keyup)
 
-    def draw(self):
-        if self.kiriliyor and not self.sabit:
-            # Kırılan platform - kırmızı
-            ctx.fillStyle = f'rgb({KIRMIZI[0]},{KIRMIZI[1]},{KIRMIZI[2]})'
-        elif self.sabit:
-            # Sabit platform - koyu yeşil
-            ctx.fillStyle = f'rgb({YESIL[0]},{YESIL[1]},{YESIL[2]})'
-        else:
-            # Normal platform - açık yeşil
-            ctx.fillStyle = f'rgb({ACIK_YESIL[0]},{ACIK_YESIL[1]},{ACIK_YESIL[2]})'
-        
-        ctx.fillRect(self.x, self.y, self.width, self.height)
-        
-        # Platform kenarlığı
-        ctx.strokeStyle = f'rgb({YESIL[0]},{YESIL[1]},{YESIL[2]})'
-        ctx.lineWidth = 2
-        ctx.strokeRect(self.x, self.y, self.width, self.height)
+      setup_keyboard()
+      print("Klavye kontrolleri ayarlandı")
 
-class Havuc:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.width = HAVUC_GENISLIK
-        self.height = HAVUC_YUKSEKLIK
-        self.anim_offset = 0
+      # Oyuncu sınıfı
+      class Oyuncu:
+          def __init__(self, x, y):
+              self.x = x
+              self.y = y
+              self.width = 32
+              self.height = 32
+              self.hiz_y = 0
+              self.yerde_mi = False
+              self.combo = 0
+              self.havuc_sayisi = 0
 
-    def update(self):
-        self.anim_offset += 0.2
+          def guncelle(self, platformlar, itemlar, zaman):
+              global keys_just_pressed
 
-    def draw(self):
-        # Animasyonlu havuç
-        offset = int(3 * abs(js.Math.sin(self.anim_offset)))
-        ctx.fillStyle = f'rgb({HAVUC_RENGI[0]},{HAVUC_RENGI[1]},{HAVUC_RENGI[2]})'
-        ctx.fillRect(self.x, self.y - offset, self.width, self.height)
-        
-        # Havuç yaprakları
-        ctx.fillStyle = f'rgb({YESIL[0]},{YESIL[1]},{YESIL[2]})'
-        ctx.fillRect(self.x + 8, self.y - offset, 14, 8)
+              # Hareket kontrolleri
+              if 'ArrowLeft' in keys_pressed or 'KeyA' in keys_pressed:
+                  self.x -= OYUNCU_HIZ
+              if 'ArrowRight' in keys_pressed or 'KeyD' in keys_pressed:
+                  self.x += OYUNCU_HIZ
 
-# Oyun nesneleri
-oyuncu = Oyuncu(GENISLIK // 2, YUKSEKLIK - 100)
-platformlar = []
-itemlar = []
+              # Sınır kontrolü
+              self.x = max(0, min(self.x, GENISLIK - self.width))
 
-# Başlangıç platformu
-baslangic_platform = Platform(GENISLIK // 2 - PLATFORM_GENISLIK_UZUN // 2, YUKSEKLIK - 50, PLATFORM_GENISLIK_UZUN, True)
-platformlar.append(baslangic_platform)
+              # Yerçekimi
+              self.hiz_y += YERCEKIMI
+              self.y += self.hiz_y
+              self.yerde_mi = False
 
-# Platform oluşturma
-def platform_olustur():
-    min_y = YUKSEKLIK - 120
-    for i in range(15):
-        x = random.randint(0, GENISLIK - PLATFORM_GENISLIK_UZUN)
-        y = min_y - (i * random.randint(80, 120))
-        width = random.choice([PLATFORM_GENISLIK_KISA, PLATFORM_GENISLIK_UZUN])
-        platform = Platform(x, y, width)
-        platformlar.append(platform)
-        
-        # Havuç ekleme şansı
-        if random.random() < 0.6:
-            havuc = Havuc(x + width // 2 - HAVUC_GENISLIK // 2, y - 35)
-            itemlar.append(havuc)
+              # Platform çarpışması
+              for platform in platformlar:
+                  if (self.x < platform.x + platform.width and
+                      self.x + self.width > platform.x and
+                      self.y < platform.y + platform.height and
+                      self.y + self.height > platform.y and
+                      self.hiz_y > 0):
+                      self.y = platform.y - self.height
+                      self.hiz_y = 0
+                      self.yerde_mi = True
+                      platform.kirilmaya_basla(zaman)
 
-platform_olustur()
+              # Havuç toplama
+              for item in list(itemlar):
+                  if (self.x < item.x + item.width and
+                      self.x + self.width > item.x and
+                      self.y < item.y + item.height and
+                      self.y + self.height > item.y):
+                      itemlar.remove(item)
+                      self.havuc_sayisi += 1
 
-# Oyun değişkenleri
-skor = 0
-kayma = 0
-oyun_aktif = True
-zaman = js.Date.now()
-en_yuksek_skor = 0
+              # Zıplama kontrolleri
+              zipla_tusları = {'Space', 'KeyW', 'ArrowUp'}
+              if any(key in keys_just_pressed for key in zipla_tusları) and self.yerde_mi:
+                  self.zipla()
 
-print("Havuç Topla oyunu başladı!")
-\);
+              # Özel zıplama
+              if 'KeyZ' in keys_just_pressed and self.yerde_mi:
+                  if self.havuc_sayisi >= 6:
+                      self.hiz_y = SUPER_ZIP_GUCU
+                      self.havuc_sayisi -= 6
+                      self.combo += 1
+                  elif self.havuc_sayisi >= 3:
+                      self.hiz_y = YUKSEK_ZIP_GUCU
+                      self.havuc_sayisi -= 3
+                      self.combo += 1
 
-          statusDiv.textContent = 'Oyun çalışıyor! Tuşları kullanarak oynayabilirsiniz.';
-          
-          // Oyun döngüsünü başlat
-          gameLoop();
+              # Tuş durumunu temizle
+              keys_just_pressed.clear()
 
-        } catch (error) {
-          console.error('Oyun başlatma hatası:', error);
-          showError('Oyun başlatılamadı: ' + error.message);
-          gameRunning = false;
-          startBtn.disabled = false;
-          stopBtn.disabled = true;
-        }
-      }
+          def zipla(self):
+              self.hiz_y = ZIPLAMA_GUCU
+              self.combo += 1
 
-      // Oyun döngüsü
-      function gameLoop() {
-        if (!gameRunning) return;
+          def draw(self):
+              # Oyuncu çizimi
+              ctx.fillStyle = f'rgb({MAVI[0]},{MAVI[1]},{MAVI[2]})'
+              ctx.fillRect(self.x, self.y, self.width, self.height)
 
-        try {
-          // Python oyun mantığını çalıştır
-          pyodide.runPython(
-# Zaman güncelleme
-yeni_zaman = js.Date.now()
-dt = yeni_zaman - zaman
-zaman = yeni_zaman
+              # Gözler
+              ctx.fillStyle = 'white'
+              ctx.fillRect(self.x + 6, self.y + 8, 6, 6)
+              ctx.fillRect(self.x + 20, self.y + 8, 6, 6)
 
-if oyun_aktif:
-    # Oyuncu güncelleme
-    oyuncu.guncelle(platformlar, itemlar, zaman)
-    
-    # Platform güncelleme
-    platformlar[:] = [p for p in platformlar if p.guncelle(zaman, skor)]
-    
-    # Item güncelleme
-    for item in itemlar:
-        item.update()
-    
-    # Kamera kaydırma
-    if oyuncu.y <= YUKSEKLIK // 3:
-        kayma = YUKSEKLIK // 3 - oyuncu.y
-        oyuncu.y = YUKSEKLIK // 3
-        skor += int(kayma // 5)
-        
-        # Tüm nesneleri aşağı kaydır
-        for platform in platformlar:
-            platform.y += kayma
-        for item in itemlar:
-            item.y += kayma
-        
-        # Ekran dışına çıkan nesneleri temizle
-        platformlar[:] = [p for p in platformlar if p.y < YUKSEKLIK + 100]
-        itemlar[:] = [i for i in itemlar if i.y < YUKSEKLIK + 100]
-        
-        # Yeni platformlar ekle
-        if len(platformlar) < 12:
-            for _ in range(3):
-                x = random.randint(0, GENISLIK - PLATFORM_GENISLIK_UZUN)
-                y = min([p.y for p in platformlar]) - random.randint(80, 120)
-                width = random.choice([PLATFORM_GENISLIK_KISA, PLATFORM_GENISLIK_UZUN])
-                platform = Platform(x, y, width)
-                platformlar.append(platform)
-                
-                if random.random() < 0.6:
-                    havuc = Havuc(x + width // 2 - HAVUC_GENISLIK // 2, y - 35)
-                    itemlar.append(havuc)
-    
-    # Oyun bitişi kontrolü
-    if oyuncu.y > YUKSEKLIK:
-        oyun_aktif = False
-        if skor > en_yuksek_skor:
-            en_yuksek_skor = skor
+              ctx.fillStyle = 'black'
+              ctx.fillRect(self.x + 8, self.y + 10, 2, 2)
+              ctx.fillRect(self.x + 22, self.y + 10, 2, 2)
 
-# Çizim - Gökyüzü gradient
-gradient = ctx.createLinearGradient(0, 0, 0, YUKSEKLIK)
-gradient.addColorStop(0, f'rgb({GOK_MAVISI[0]},{GOK_MAVISI[1]},{GOK_MAVISI[2]})')
-gradient.addColorStop(1, 'rgb(200,230,255)')
-ctx.fillStyle = gradient
-ctx.fillRect(0, 0, GENISLIK, YUKSEKLIK)
+      class Platform:
+          def __init__(self, x, y, width, sabit=False):
+              self.x = x
+              self.y = y
+              self.width = width
+              self.height = PLATFORM_YUKSEKLIK
+              self.sabit = sabit
+              self.kiriliyor = False
+              self.kirilma_baslangic = 0
+              self.orijinal_width = width
 
-# Bulutlar için basit efekt
-for i in range(5):
-    x = (i * 100 + int(zaman * 0.01) % 500) % (GENISLIK + 50)
-    y = 50 + i * 80
-    ctx.fillStyle = 'rgba(255,255,255,0.3)'
-    ctx.beginPath()
-    ctx.arc(x, y, 20, 0, 2 * js.Math.PI)
-    ctx.arc(x + 20, y, 25, 0, 2 * js.Math.PI)
-    ctx.arc(x + 40, y, 20, 0, 2 * js.Math.PI)
-    ctx.fill()
+          def kirilmaya_basla(self, zaman):
+              if not self.sabit and not self.kiriliyor:
+                  self.kiriliyor = True
+                  self.kirilma_baslangic = zaman
 
-# Nesneleri çiz
-for platform in platformlar:
-    if -100 < platform.y < YUKSEKLIK + 100:
-        platform.draw()
+          def guncelle(self, zaman, skor):
+              if self.kiriliyor and not self.sabit:
+                  sure = max(MIN_KIRILMA_SURESI, KIRILMA_SURESI - (skor // 1000) * KIRILMA_HIZLANMA)
+                  gecen_sure = zaman - self.kirilma_baslangic
+                  if gecen_sure > sure:
+                      return False  # Platform kırıldı
+                  else:
+                      # Platform küçülüyor
+                      kalan_oran = 1 - (gecen_sure / sure)
+                      self.width = max(20, int(self.orijinal_width * kalan_oran))
+              return True
 
-for item in itemlar:
-    if -100 < item.y < YUKSEKLIK + 100:
-        item.draw()
+          def draw(self):
+              if self.kiriliyor and not self.sabit:
+                  # Kırılan platform - kırmızı
+                  ctx.fillStyle = f'rgb({KIRMIZI[0]},{KIRMIZI[1]},{KIRMIZI[2]})'
+              elif self.sabit:
+                  # Sabit platform - koyu yeşil
+                  ctx.fillStyle = f'rgb({YESIL[0]},{YESIL[1]},{YESIL[2]})'
+              else:
+                  # Normal platform - açık yeşil
+                  ctx.fillStyle = f'rgb({ACIK_YESIL[0]},{ACIK_YESIL[1]},{ACIK_YESIL[2]})'
 
-oyuncu.draw()
+              ctx.fillRect(self.x, self.y, self.width, self.height)
 
-# HUD - Gelişmiş
-ctx.fillStyle = 'rgba(0,0,0,0.5)'
-ctx.fillRect(0, 0, GENISLIK, 120)
+              # Platform kenarlığı
+              ctx.strokeStyle = f'rgb({YESIL[0]},{YESIL[1]},{YESIL[2]})'
+              ctx.lineWidth = 2
+              ctx.strokeRect(self.x, self.y, self.width, self.height)
 
-ctx.fillStyle = f'rgb({BEYAZ[0]},{BEYAZ[1]},{BEYAZ[2]})'
-ctx.font = 'bold 20px Arial'
-ctx.fillText(f'SKOR: {skor}', 20, 30)
-ctx.font = '16px Arial'
-ctx.fillText(f'COMBO: x{oyuncu.combo}', 20, 55)
-ctx.fillText(f'HAVUÇ: {oyuncu.havuc_sayisi}', 20, 75)
-ctx.fillText(f'EN YÜKSEK: {en_yuksek_skor}', 20, 95)
+      class Havuc:
+          def __init__(self, x, y):
+              self.x = x
+              self.y = y
+              self.width = HAVUC_GENISLIK
+              self.height = HAVUC_YUKSEKLIK
+              self.anim_offset = 0
 
-if not oyun_aktif:
-    # Oyun bitti ekranı
-    ctx.fillStyle = 'rgba(0,0,0,0.8)'
-    ctx.fillRect(0, 0, GENISLIK, YUKSEKLIK)
-    
-    ctx.fillStyle = f'rgb({BEYAZ[0]},{BEYAZ[1]},{BEYAZ[2]})'
-    ctx.font = 'bold 32px Arial'
-    ctx.textAlign = 'center'
-    ctx.fillText('OYUN BİTTİ', GENISLIK//2, YUKSEKLIK//2 - 60)
-    ctx.font = 'bold 24px Arial'
-    ctx.fillText(f'Son Skor: {skor}', GENISLIK//2, YUKSEKLIK//2 - 20)
-    if skor == en_yuksek_skor and skor > 0:
-        ctx.fillStyle = 'gold'
-        ctx.fillText('YENİ REKOR!', GENISLIK//2, YUKSEKLIK//2 + 20)
-    ctx.fillStyle = f'rgb({BEYAZ[0]},{BEYAZ[1]},{BEYAZ[2]})'
-    ctx.font = '18px Arial'
-    ctx.fillText('Yeniden başlatmak için', GENISLIK//2, YUKSEKLIK//2 + 60)
-    ctx.fillText('"Oyunu Başlat" butonuna tıklayın', GENISLIK//2, YUKSEKLIK//2 + 85)
-    ctx.textAlign = 'left'
-);
+          def update(self):
+              self.anim_offset += 0.2
 
-          // Oyun devam ediyorsa döngüyü sürdür
-          if (gameRunning) {
-            gameLoopId = requestAnimationFrame(gameLoop);
-          }
+          def draw(self):
+              # Animasyonlu havuç
+              offset = int(3 * abs(js.Math.sin(self.anim_offset)))
+              ctx.fillStyle = f'rgb({HAVUC_RENGI[0]},{HAVUC_RENGI[1]},{HAVUC_RENGI[2]})'
+              ctx.fillRect(self.x, self.y - offset, self.width, self.height)
 
-        } catch (error) {
-          console.error('Oyun döngüsü hatası:', error);
-          showError('Oyun hatası: ' + error.message);
-          stopGame();
-        }
-      }
+              # Havuç yaprakları
+              ctx.fillStyle = f'rgb({YESIL[0]},{YESIL[1]},{YESIL[2]})'
+              ctx.fillRect(self.x + 8, self.y - offset, 14, 8)
 
-      // Oyunu durdur
-      function stopGame() {
-        gameRunning = false;
-        if (gameLoopId) {
-          cancelAnimationFrame(gameLoopId);
-          gameLoopId = null;
-        }
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        statusDiv.textContent = 'Oyun durduruldu';
-        statusDiv.className = 'status';
-      }
+      # Oyun nesneleri
+      oyuncu = Oyuncu(GENISLIK // 2, YUKSEKLIK - 100)
+      platformlar = []
+      itemlar = []
 
-      // Hata göster
-      function showError(message) {
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
-        setTimeout(() => {
-          errorDiv.style.display = 'none';
-        }, 8000);
-      }
+      # Başlangıç platformu
+      baslangic_platform = Platform(GENISLIK // 2 - PLATFORM_GENISLIK_UZUN // 2, YUKSEKLIK - 50, PLATFORM_GENISLIK_UZUN, True)
+      platformlar.append(baslangic_platform)
 
-      // Event listener'lar
-      loadBtn.addEventListener('click', loadPyodide);
-      startBtn.addEventListener('click', startGame);
-      stopBtn.addEventListener('click', stopGame);
+      # Platform oluşturma
+      def platform_olustur():
+          min_y = YUKSEKLIK - 120
+          for i in range(15):
+              x = random.randint(0, GENISLIK - PLATFORM_GENISLIK_UZUN)
+              y = min_y - (i * random.randint(80, 120))
+              width = random.choice([PLATFORM_GENISLIK_KISA, PLATFORM_GENISLIK_UZUN])
+              platform = Platform(x, y, width)
+              platformlar.append(platform)
 
-      // Canvas focus için
-      canvas.addEventListener('click', () => {
-        canvas.focus();
-        canvas.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      });
-      canvas.tabIndex = 0;
+              # Havuç ekleme şansı
+              if random.random() < 0.6:
+                  havuc = Havuc(x + width // 2 - HAVUC_GENISLIK // 2, y - 35)
+                  itemlar.append(havuc)
 
-      // Sayfa yüklendiğinde otomatik yükleme
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          if (confirm('Python runtime\'ı otomatik olarak yüklemek ister misiniz?')) {
-            loadPyodide();
-          }
-        }, 1000);
-      });
+      platform_olustur()
+
+      # Oyun değişkenleri
+      skor = 0
+      kayma = 0
+      oyun_aktif = True
+      zaman = js.Date.now()
+      en_yuksek_skor = 0
+
+      print("Havuç Topla oyunu başarıyla başlatıldı!")
+      print(f"Toplam platform sayısı: {len(platformlar)}")
+      print(f"Toplam havuç sayısı: {len(itemlar)}")
+      \`);
+
+                statusDiv.textContent = 'Oyun çalışıyor! Klavye kontrolleri aktif.';
+                debugLog('Python kodu başarıyla çalıştırıldı');
+
+                // Oyun döngüsünü başlat
+                gameLoop();
+
+              } catch (error) {
+                debugLog('Oyun başlatma hatası: ' + error.message);
+                console.error('Oyun başlatma hatası:', error);
+                showError('Oyun başlatılamadı: ' + error.message);
+                gameRunning = false;
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+              }
+            }
+
+            // Oyun döngüsü
+            function gameLoop() {
+              if (!gameRunning) return;
+
+              try {
+                // Python oyun mantığını çalıştır
+                pyodide.runPython(\`
+      # Zaman güncelleme
+      yeni_zaman = js.Date.now()
+      dt = yeni_zaman - zaman
+      zaman = yeni_zaman
+
+      if oyun_aktif:
+          # Oyuncu güncelleme
+          oyuncu.guncelle(platformlar, itemlar, zaman)
+
+          # Platform güncelleme
+          platformlar[:] = [p for p in platformlar if p.guncelle(zaman, skor)]
+
+          # Item güncelleme
+          for item in itemlar:
+              item.update()
+
+          # Kamera kaydırma
+          if oyuncu.y <= YUKSEKLIK // 3:
+              kayma = YUKSEKLIK // 3 - oyuncu.y
+              oyuncu.y = YUKSEKLIK // 3
+              skor += int(kayma // 5)
+
+              # Tüm nesneleri aşağı kaydır
+              for platform in platformlar:
+                  platform.y += kayma
+              for item in itemlar:
+                  item.y += kayma
+
+              # Ekran dışına çıkan nesneleri temizle
+              platformlar[:] = [p for p in platformlar if p.y < YUKSEKLIK + 100]
+              itemlar[:] = [i for i in itemlar if i.y < YUKSEKLIK + 100]
+
+              # Yeni platformlar ekle
+              if len(platformlar) < 12:
+                  for _ in range(3):
+                      x = random.randint(0, GENISLIK - PLATFORM_GENISLIK_UZUN)
+                      y = min([p.y for p in platformlar]) - random.randint(80, 120)
+                      width = random.choice([PLATFORM_GENISLIK_KISA, PLATFORM_GENISLIK_UZUN])
+                      platform = Platform(x, y, width)
+                      platformlar.append(platform)
+
+                      if random.random() < 0.6:
+                          havuc = Havuc(x + width // 2 - HAVUC_GENISLIK // 2, y - 35)
+                          itemlar.append(havuc)
+
+          # Oyun bitişi kontrolü
+          if oyuncu.y > YUKSEKLIK:
+              oyun_aktif = False
+              if skor > en_yuksek_skor:
+                  en_yuksek_skor = skor
+
+      # Çizim - Gökyüzü gradient
+      gradient = ctx.createLinearGradient(0, 0, 0, YUKSEKLIK)
+      gradient.addColorStop(0, f'rgb({GOK_MAVISI[0]},{GOK_MAVISI[1]},{GOK_MAVISI[2]})')
+      gradient.addColorStop(1, 'rgb(200,230,255)')
+      ctx.fillStyle = gradient
+      ctx.fillRect(0, 0, GENISLIK, YUKSEKLIK)
+
+      # Bulutlar için basit efekt
+      for i in range(5):
+          x = (i * 100 + int(zaman * 0.01) % 500) % (GENISLIK + 50)
+          y = 50 + i * 80
+          ctx.fillStyle = 'rgba(255,255,255,0.3)'
+          ctx.beginPath()
+          ctx.arc(x, y, 20, 0, 2 * js.Math.PI)
+          ctx.arc(x + 20, y, 25, 0, 2 * js.Math.PI)
+          ctx.arc(x + 40, y, 20, 0, 2 * js.Math.PI)
+          ctx.fill()
+
+      # Nesneleri çiz
+      for platform in platformlar:
+          if -100 < platform.y < YUKSEKLIK + 100:
+              platform.draw()
+
+      for item in itemlar:
+          if -100 < item.y < YUKSEKLIK + 100:
+              item.draw()
+
+      oyuncu.draw()
+
+      # HUD - Gelişmiş
+      ctx.fillStyle = 'rgba(0,0,0,0.5)'
+      ctx.fillRect(0, 0, GENISLIK, 120)
+
+      ctx.fillStyle = f'rgb({BEYAZ[0]},{BEYAZ[1]},{BEYAZ[2]})'
+      ctx.font = 'bold 20px Arial'
+      ctx.fillText(f'SKOR: {skor}', 20, 30)
+      ctx.font = '16px Arial'
+      ctx.fillText(f'COMBO: x{oyuncu.combo}', 20, 55)
+      ctx.fillText(f'HAVUC: {oyuncu.havuc_sayisi}', 20, 75)
+      ctx.fillText(f'EN YUKSEK: {en_yuksek_skor}', 20, 95)
+
+      if not oyun_aktif:
+          # Oyun bitti ekranı
+          ctx.fillStyle = 'rgba(0,0,0,0.8)'
+          ctx.fillRect(0, 0, GENISLIK, YUKSEKLIK)
+
+          ctx.fillStyle = f'rgb({BEYAZ[0]},{BEYAZ[1]},{BEYAZ[2]})'
+          ctx.font = 'bold 32px Arial'
+          ctx.textAlign = 'center'
+          ctx.fillText('OYUN BITTI', GENISLIK//2, YUKSEKLIK//2 - 60)
+          ctx.font = 'bold 24px Arial'
+          ctx.fillText(f'Son Skor: {skor}', GENISLIK//2, YUKSEKLIK//2 - 20)
+          if skor == en_yuksek_skor and skor > 0:
+              ctx.fillStyle = 'gold'
+              ctx.fillText('YENI REKOR!', GENISLIK//2, YUKSEKLIK//2 + 20)
+          ctx.fillStyle = f'rgb({BEYAZ[0]},{BEYAZ[1]},{BEYAZ[2]})'
+          ctx.font = '18px Arial'
+          ctx.fillText('Yeniden başlatmak için', GENISLIK//2, YUKSEKLIK//2 + 60)
+          ctx.fillText('"Oyunu Başlat" butonuna tıklayın', GENISLIK//2, YUKSEKLIK//2 + 85)
+          ctx.textAlign = 'left'
+      \`);
+
+                // Oyun devam ediyorsa döngüyü sürdür
+                if (gameRunning) {
+                  gameLoopId = requestAnimationFrame(gameLoop);
+                }
+
+              } catch (error) {
+                debugLog('Oyun döngüsü hatası: ' + error.message);
+                console.error('Oyun döngüsü hatası:', error);
+                showError('Oyun hatası: ' + error.message);
+                stopGame();
+              }
+            }
+
+            // Oyunu durdur
+            function stopGame() {
+              gameRunning = false;
+              if (gameLoopId) {
+                cancelAnimationFrame(gameLoopId);
+                gameLoopId = null;
+              }
+              startBtn.disabled = false;
+              stopBtn.disabled = true;
+              statusDiv.textContent = 'Oyun durduruldu';
+              statusDiv.className = 'status';
+              debugLog('Oyun durduruldu');
+            }
+
+            // Hata göster
+            function showError(message) {
+              errorDiv.textContent = message;
+              errorDiv.style.display = 'block';
+              setTimeout(() => {
+                errorDiv.style.display = 'none';
+              }, 10000);
+            }
+
+            // Event listener'lar
+            loadBtn.addEventListener('click', loadPyodide);
+            startBtn.addEventListener('click', startGame);
+            stopBtn.addEventListener('click', stopGame);
+
+            // Canvas focus için
+            canvas.addEventListener('click', () => {
+              canvas.focus();
+              canvas.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+            canvas.tabIndex = 0;
+
+            // Sayfa yüklendiğinde kontrol
+            window.addEventListener('load', () => {
+              debugLog('Sayfa yüklendi');
+              console.log('Havuç Topla oyunu hazır - Python runtime yüklemek için butona tıklayın');
+            });
+
+            // Hata yakalama
+            window.addEventListener('error', (e) => {
+              debugLog('JavaScript hatası: ' + e.message);
+              console.error('JavaScript hatası:', e);
+            });
+
+            window.addEventListener('unhandledrejection', (e) => {
+              debugLog('Promise hatası: ' + e.reason);
+              console.error('Promise hatası:', e.reason);
+            });
     </script>
   </body>
 </html>
