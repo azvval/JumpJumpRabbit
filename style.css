@@ -52,6 +52,10 @@ h1 {
   transition: transform 0.3s ease;
 }
 
+.character {
+  animation: hop 1.5s infinite alternate;
+}
+
 /* FARE ÜZERİNDEYKEN ANİMASYON */
 .character-rotate:hover.character {
   animation:rotate(360 deg) cubic-bezier(0.075, 0.82, 0.165, 1);
