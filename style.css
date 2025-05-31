@@ -13,7 +13,7 @@ body {
 
 /* ANA SAYFA (Değişen kısımlar) */
 .home-page {
-  background: url('../tema/example.png') no-repeat center center fixed;
+  background: url('./JumpJumpRabbit/tema/example.png') no-repeat center center fixed;
   background-size: cover;
   position: relative;
   height: 100%;
@@ -189,7 +189,7 @@ iframe {
 }
 /* Ana sayfa stilleri aynen kalacak */
 .home-page {
-    background: url('../tema/example.png') no-repeat center center fixed;
+    background: url('./JumpJumpRabbit/tema/example.png') no-repeat center center fixed;
     background-size: cover;
     /* Diğer stiller... */
 }
