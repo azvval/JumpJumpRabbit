@@ -54,7 +54,7 @@ h1 {
 
 /* FARE ÜZERİNDEYKEN ANİMASYON */
 .character-rotate:hover.character {
-  animation:rotate(360deg)cubic-bezier(0.075, 0.82, 0.165, 1);
+  animation:rotate(360 deg) cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 /* DİĞER STİLLER (Aynı) */
