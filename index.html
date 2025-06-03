@@ -4,13 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jump Jump Rabbit</title>
-   <link rel="stylesheet" href="./style.css">
-    <head>
-        <body class="home-page">
-    <div class="content">
-        <h1>Jump Jump Rabbit</h1>
-        <div class="character-container">
-            <img src="JumpJumpRabbit/Idle.png" alt="Tavşan" class="character">
+    <link rel="stylesheet" href="./style.css">
     <style>
         body {
             margin: 0;
@@ -50,15 +44,20 @@
 </head>
 <body>
     <div class="game-container">
-
+        <h1>Jump Jump Rabbit</h1>
+        <div class="character-container">
+            <img src="JumpJumpRabbit/Idle.png" alt="Tavşan" class="character">
+        <p>Yukarı doğru heyecan dolu bir macera!</p>
+        </div>
         
         <button class="btn" onclick="startGame()">OYUNA BAŞLA</button>
         
         <div id="gameArea" style="display: none;">
+             <button class="btn" onclick="startGame()">OYUNA BAŞLA</button>
             <canvas id="gameCanvas"></canvas>
             <p><strong>Kontroller:</strong></p>
             <p>← → : Hareket | Boşluk: Zıpla | Z: Özel Zıplama</p>
-        </div>
+    
     </div>
 
     <script>
@@ -71,31 +70,5 @@
     
     <!-- Pygbag tarafından oluşturulan script'ler -->
     <script src="main.js"></script>
-</body>
-</html>
-
-
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jump Jump Rabbit</title>
-    <link rel="stylesheet" href="./style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-</head>
-<body class="home-page">
-    <div class="content">
-        <h1>Jump Jump Rabbit</h1>
-        <div class="character-container">
-            <img src="JumpJumpRabbit/Idle.png" alt="Tavşan" class="character">
-        </div>
-         <p class="tagline">Yukarı doğru heyecan dolu bir macera!</p>
-        <a href="game.html" class="start-button">OYUNA BAŞLA</a>
-        <div class="instructions">
-            <p>Mobil cihazlarda dokunmatik kontroller kullanılacak</p>
-            <p>Bilgisayarda klavye kontrolleri ile oynanacak</p>
-        </div>
-    </div>
 </body>
 </html>
