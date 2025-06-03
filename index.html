@@ -4,71 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jump Jump Rabbit</title>
-    <link rel="stylesheet" href="./style.css">
-    <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .game-container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        #gameCanvas {
-            border: 3px solid #333;
-            border-radius: 10px;
-            display: block;
-            margin: 20px auto;
-        }
-        .btn {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 10px;
-        }
-        .btn:hover {
-            background: #45a049;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <div class="game-container">
-        <h1>Jump Jump Rabbit</h1>
+<body class="home-page">
+    <div class="content">
+        <h1>Zip Zip Tavşan</h1>
         <div class="character-container">
-            <img src="JumpJumpRabbit/Idle.png" alt="Tavşan" class="character">
-        <p>Yukarı doğru heyecan dolu bir macera!</p>
+            <img src="Idle.png" alt="Tavşan" class="character">
         </div>
-        
-        <button class="btn" onclick="startGame()">OYUNA BAŞLA</button>
-        
-        <div id="gameArea" style="display: none;">
-             <button class="btn" onclick="startGame()">OYUNA BAŞLA</button>
-            <canvas id="gameCanvas"></canvas>
-            <p><strong>Kontroller:</strong></p>
-            <p>← → : Hareket | Boşluk: Zıpla | Z: Özel Zıplama</p>
-    
+        <a href="game.html" class="start-button">OYUNA BAŞLA</a>
+        <div class="instructions">
+            <p>Mobil cihazlarda dokunmatik kontroller kullanılacak</p>
+            <p>Bilgisayarda klavye kontrolleri ile oynanacak</p>
+        </div>
     </div>
-
-    <script>
-        function startGame() {
-            document.getElementById('gameArea').style.display = 'block';
-            // Pygbag tarafından oluşturulan oyun yükleme kodu buraya gelecek
-            loadPygameGame();
-        }
-    </script>
-    
-    <!-- Pygbag tarafından oluşturulan script'ler -->
-    <script src="main.js"></script>
 </body>
 </html>
