@@ -5,25 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jump Jump Rabbit - Oyun</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css"> <!-- Ana stil dosyası -->
     <style>
-        /* ANA STİLLER */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Press Start 2P', cursive;
-            color: white;
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        /* OYUN KONTEYNER */
+        /* OYUN SAYFASI ÖZEL STİLLER */
         .game-container {
             position: relative;
             width: 100%;
-            height: 100%;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        /* ARKA PLAN KATMANLARI */
         .background-layer {
             position: absolute;
             width: 100%;
@@ -32,11 +23,10 @@
             z-index: -1;
         }
 
-        .layer1 { z-index: 1; } /* En arkadaki katman */
-        .layer2 { z-index: 2; } /* Orta katman */
-        .layer3 { z-index: 3; } /* Ön katman */
+        .layer1 { z-index: 1; }
+        .layer2 { z-index: 2; }
+        .layer3 { z-index: 3; }
 
-        /* IFRAME STİLİ */
         #game-frame {
             position: absolute;
             width: 100%;
@@ -46,7 +36,7 @@
             z-index: 10;
         }
 
-        /* BAŞLIK STİLİ (Ana sayfayla aynı) */
+        /* Ana sayfa başlık stiliyle uyumlu */
         .game-header {
             position: absolute;
             top: 20px;
@@ -58,25 +48,42 @@
             letter-spacing: 3px;
             text-align: center;
             pointer-events: none;
+            font-family: 'Press Start 2P', cursive;
         }
 
-        /* MOBİL UYUM */
-        @media (max-width: 600px) {
-            .game-header {
-                font-size: 1.5rem;
-                top: 10px;
-            }
+        /* Geri dön butonu */
+        .back-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #FF5722, #FF9800);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Press Start 2P', cursive;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        .back-button:hover {
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
-<body>
+<body class="game-page">
     <div class="game-header">JUMP JUMP RABBIT</div>
     
     <div class="game-container">
         <!-- Arka Plan Katmanları -->
-        <img src="/JumpJumpRabbit/tema/background/background_0.png" class="background-layer layer1">
-        <img src="/JumpJumpRabbit/tema/background/background_1.png" class="background-layer layer2">
-        <img src="/JumpJumpRabbit/tema/background/background_2.png" class="background-layer layer3">
+        <img src="assets/tema/background/background_0.png" class="background-layer layer1">
+        <img src="assets/tema/background/background_1.png" class="background-layer layer2">
+        <img src="assets/tema/background/background_2.png" class="background-layer layer3">
         
         <!-- Oyun IFrame -->
         <iframe 
@@ -84,6 +91,9 @@
             src="pygbag/index.html" 
             allowfullscreen>
         </iframe>
+
+        <!-- Ana sayfaya dön butonu -->
+        <button class="back-button" onclick="window.location.href='index.html'">ANA SAYFA</button>
     </div>
 
     <script>
@@ -99,6 +109,11 @@
                 };
             });
         });
+
+        // Mobil kontroller için ekstra ayar
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            document.body.classList.add('mobile');
+        }
     </script>
 </body>
 </html>
