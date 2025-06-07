@@ -15,7 +15,7 @@ Pygame ile geliştirilmiş zıplama oyunu. Web tarayıcısında oynanabilir!
 ## 🎮 Kontroller
 - **Sol/Sağ Ok**: Hareket
 - **Space**: Zıplama
-- **Z**: Özel zıplama (havuç gerektirir)
+- **Z**: Özel zıplama (havuç gerektirir.(3 havuç toplandığında super Jump, 6 havuç toplandığında 6x super Jump))
 - **R**: Oyunu yeniden başlat (oyun bittiğinde)
 
 ## 🚀 Geliştirme
