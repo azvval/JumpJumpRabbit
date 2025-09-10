@@ -1,6 +1,6 @@
 # Jump Jump Rabbit 🐰
 
-Pygame ile geliştirilmiş zıplama oyunu. Web tarayıcısında oynanabilir!
+Pygame ile geliştirilmiş zıplama oyunu.
 
 ## 🎮 Oyun
 [Oyunu Oyna](https://azvval.github.io/JumpJumpRabbit/)
