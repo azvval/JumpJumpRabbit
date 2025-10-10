@@ -147,7 +147,7 @@ class Oyun:
                 self.ekran.blit(yeniden_yazi, (GENISLIK // 2 - yeniden_yazi.get_width() // 2, YUKSEKLIK // 2 + 60))
 
             pygame.display.flip()
-            await asyncio.sleep(0)  # Web için kritik!
+            await asyncio.sleep(0)  
             self.saat.tick(FPS)
 
 async def main():
@@ -155,4 +155,5 @@ async def main():
     await oyun.calistir()
 
 if __name__ == "__main__":
+
     asyncio.run(main())
