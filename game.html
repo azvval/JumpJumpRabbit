@@ -97,7 +97,7 @@
             width: 0%;
             background: linear-gradient(90deg, #FF5722, #FFD700);
             border-radius: 8px;
-            animation: load 2s ease-out forwards;
+            animation: load 4s ease-out forwards;
         }
         @keyframes load {
             0%   { width: 0%; }
@@ -135,17 +135,18 @@
     </div>
 
     <script>
-        document.getElementById('game-frame').addEventListener('load', function() {
-            console.log("Oyun başarıyla yüklendi!");
-
-            // Loading screen'i kaldır
-            setTimeout(function() {
-                var loading = document.getElementById('loading-screen');
+        // 4 saniye sonra loading screen'i kaldır
+        setTimeout(function() {
+            var loading = document.getElementById('loading-screen');
+            if (loading) {
                 loading.style.transition = 'opacity 0.5s';
                 loading.style.opacity = '0';
                 setTimeout(function() { loading.style.display = 'none'; }, 500);
-            }, 500);
+            }
+        }, 4000);
 
+        document.getElementById('game-frame').addEventListener('load', function() {
+            console.log("Oyun başarıyla yüklendi!");
             document.querySelectorAll('.background-layer').forEach(img => {
                 img.onerror = function() {
                     console.warn("Arka plan resmi yüklenemedi: ", this.src);
