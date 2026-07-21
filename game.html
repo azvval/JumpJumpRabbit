@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jump Jump Rabbit</title>
     <link rel="stylesheet" href="./style.css">
     <style>
+        /* TEMEL DÜZEN */
+        body, html { margin: 0; padding: 0; background-color: #000; }
+        
         .game-container {
             position: relative;
             width: 100%;
@@ -21,6 +25,7 @@
         .layer1 { z-index: 1; }
         .layer2 { z-index: 2; }
         .layer3 { z-index: 3; }
+        
         #game-frame {
             position: absolute;
             width: 100%;
@@ -29,42 +34,8 @@
             background: transparent;
             z-index: 10;
         }
-        .game-header {
-            position: absolute;
-            top: 20px;
-            width: 100%;
-            z-index: 20;
-            color: #FFD700;
-            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
-            font-size: 2rem;
-            letter-spacing: 3px;
-            text-align: center;
-            pointer-events: none;
-            font-family: 'Press Start 2P', cursive;
-        }
-        .back-button {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 20;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #FF5722, #FF9800);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-family: 'Press Start 2P', cursive;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
-        }
-        .back-button:hover {
-            transform: translateX(-50%) translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
 
-        /* LOADING SCREEN */
+        /* YÜKLEME EKRANI (LOADING SCREEN) */
         #loading-screen {
             position: fixed;
             top: 0; left: 0;
@@ -77,56 +48,62 @@
             justify-content: center;
             gap: 24px;
         }
-        #loading-screen p {
+        #loading-text {
             color: #FFD700;
-            font-family: 'Press Start 2P', cursive;
+            font-family: 'Press Start 2P', monospace, sans-serif;
             font-size: 1rem;
             letter-spacing: 3px;
-            animation: blink 1s step-start infinite;
+            animation: blink 1.5s step-start infinite;
+            text-align: center;
+            padding: 0 20px;
+            line-height: 1.5;
         }
         .loading-bar-wrapper {
-            width: 200px;
+            width: 250px;
             height: 16px;
             background: #333;
             border: 2px solid #FFD700;
             border-radius: 8px;
             overflow: hidden;
         }
+        /* Animasyon süresi Pygbag indirme süresine (15s) göre ayarlandı */
         .loading-bar {
             height: 100%;
             width: 0%;
             background: linear-gradient(90deg, #FF5722, #FFD700);
             border-radius: 8px;
-            animation: load 4s ease-out forwards;
+            animation: load 15s ease-out forwards;
         }
+
         @keyframes load {
             0%   { width: 0%; }
+            20%  { width: 30%; }
             60%  { width: 70%; }
-            90%  { width: 90%; }
+            80%  { width: 90%; }
             100% { width: 100%; }
         }
         @keyframes blink {
-            50% { opacity: 0; }
+            50% { opacity: 0.3; }
         }
     </style>
 </head>
 <body class="game-page">
 
-    <!-- LOADING SCREEN -->
+    <!-- YÜKLEME EKRANI -->
     <div id="loading-screen">
-        <p>YÜKLENİYOR...</p>
+        <p id="loading-text">OYUN MOTORU YÜKLENİYOR...</p>
         <div class="loading-bar-wrapper">
             <div class="loading-bar"></div>
         </div>
     </div>
-
-    <div class="game-header"></div>
     
     <div class="game-container">
-        <img src="./assets/tema/background/background_0.png" class="background-layer layer1">
-        <img src="./assets/tema/background/background_1.png" class="background-layer layer2">
-        <img src="./assets/tema/background/background_2.png" class="background-layer layer3">
+        <!-- Asset yolları kök dizindeki assets klasörünüze göre ayarlandı -->
+        <img src="./assets/tema/background/background_0.png" class="background-layer layer1" alt="bg0">
+        <img src="./assets/tema/background/background_1.png" class="background-layer layer2" alt="bg1">
+        <img src="./assets/tema/background/background_2.png" class="background-layer layer3" alt="bg2">
         
+        <!-- Oyunun çalıştığı iframe -->
         <iframe 
             id="game-frame"
             src="./build/web/index.html" 
@@ -135,26 +112,35 @@
     </div>
 
     <script>
-        // 4 saniye sonra loading screen'i kaldır
-        setTimeout(function() {
-            var loading = document.getElementById('loading-screen');
-            if (loading) {
-                loading.style.transition = 'opacity 0.5s';
-                loading.style.opacity = '0';
-                setTimeout(function() { loading.style.display = 'none'; }, 500);
-            }
-        }, 4000);
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingText = document.getElementById('loading-text');
 
+        // ÖĞRETİCİ NOT: Iframe'in sadece HTML iskeleti yüklendiğinde tetiklenir. 
+        // İçerisindeki Python WASM indirmesi bu noktada hala devam ediyordur.
         document.getElementById('game-frame').addEventListener('load', function() {
-            console.log("Oyun başarıyla yüklendi!");
-            document.querySelectorAll('.background-layer').forEach(img => {
-                img.onerror = function() {
-                    console.warn("Arka plan resmi yüklenemedi: ", this.src);
-                    this.style.display = 'none';
-                };
-            });
+            console.log("Iframe yapısı kuruldu, Python dosyalarının inmesi bekleniyor...");
         });
 
+        // KULLANICI DENEYİMİ: Eğer yükleme uzun sürüyorsa (8. Saniye) kullanıcıyı rahatlat
+        setTimeout(function() {
+            if(loadingScreen.style.display !== 'none') {
+                loadingText.innerText = "BİRAZ ZAMAN ALABİLİR, BEKLENİYOR...";
+            }
+        }, 8000);
+
+        // MAVİ EKRANI ÖRTME ZAMANLAYICISI: 15 saniye sonra örtüyü kaldır.
+        // WebAssembly dosyalarının ortalama indirilme süresi baz alınmıştır.
+        setTimeout(function() {
+            loadingScreen.style.transition = 'opacity 0.8s ease';
+            loadingScreen.style.opacity = '0';
+            
+            setTimeout(function() { 
+                loadingScreen.style.display = 'none'; 
+            }, 800);
+            
+        }, 15000);
+
+        // Mobil Cihaz Kontrolü
         if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             document.body.classList.add('mobile');
         }
