@@ -123,13 +123,13 @@ class Oyun:
                     self.ekran.blit(sprite.image, sprite.rect)
 
             # HUD
-            skor_yazi = self.font_buyuk.render(f"SKOR: {self.skor}", True, BEYAZ)
+            skor_yazi = self.font_buyuk.render(f"SKOR: {self.skor}", False, BEYAZ)
             self.ekran.blit(skor_yazi, (20, 20))
             
-            combo_yazi = self.font_kucuk.render(f"COMBO: x{self.oyuncu.combo}", True, BEYAZ)
+            combo_yazi = self.font_kucuk.render(f"COMBO: x{self.oyuncu.combo}", False, BEYAZ)
             self.ekran.blit(combo_yazi, (20, 60))
             
-            havuc_yazi = self.font_kucuk.render(f"HAVUÇ: {self.oyuncu.havuc_sayisi}", True, BEYAZ)
+            havuc_yazi = self.font_kucuk.render(f"HAVUÇ: {self.oyuncu.havuc_sayisi}", False, BEYAZ)
             self.ekran.blit(havuc_yazi, (20, 100))
 
             # Oyun bitiş ekranı
