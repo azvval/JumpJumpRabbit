@@ -6,7 +6,7 @@
     <title>Jump Jump Rabbit</title>
     <link rel="stylesheet" href="./style.css">
     <style>
-        /* TEMEL DÜZEN */
+       
         body, html { margin: 0; padding: 0; background-color: #000; }
         
         .game-container {
@@ -35,7 +35,7 @@
             z-index: 10;
         }
 
-        /* YÜKLEME EKRANI (LOADING SCREEN) */
+      
         #loading-screen {
             position: fixed;
             top: 0; left: 0;
@@ -66,7 +66,7 @@
             border-radius: 8px;
             overflow: hidden;
         }
-        /* Animasyon süresi Pygbag indirme süresine (15s) göre ayarlandı */
+       
         .loading-bar {
             height: 100%;
             width: 0%;
@@ -89,7 +89,7 @@
 </head>
 <body class="game-page">
 
-    <!-- YÜKLEME EKRANI -->
+    
     <div id="loading-screen">
         <p id="loading-text">OYUN MOTORU YÜKLENİYOR...</p>
         <div class="loading-bar-wrapper">
@@ -98,12 +98,12 @@
     </div>
     
     <div class="game-container">
-        <!-- Asset yolları kök dizindeki assets klasörünüze göre ayarlandı -->
+       
         <img src="./assets/tema/background/background_0.png" class="background-layer layer1" alt="bg0">
         <img src="./assets/tema/background/background_1.png" class="background-layer layer2" alt="bg1">
         <img src="./assets/tema/background/background_2.png" class="background-layer layer3" alt="bg2">
         
-        <!-- Oyunun çalıştığı iframe -->
+       
         <iframe 
             id="game-frame"
             src="./build/web/index.html" 
@@ -115,21 +115,19 @@
         const loadingScreen = document.getElementById('loading-screen');
         const loadingText = document.getElementById('loading-text');
 
-        // ÖĞRETİCİ NOT: Iframe'in sadece HTML iskeleti yüklendiğinde tetiklenir. 
-        // İçerisindeki Python WASM indirmesi bu noktada hala devam ediyordur.
+        
         document.getElementById('game-frame').addEventListener('load', function() {
             console.log("Iframe yapısı kuruldu, Python dosyalarının inmesi bekleniyor...");
         });
 
-        // KULLANICI DENEYİMİ: Eğer yükleme uzun sürüyorsa (8. Saniye) kullanıcıyı rahatlat
+       
         setTimeout(function() {
             if(loadingScreen.style.display !== 'none') {
                 loadingText.innerText = "BİRAZ ZAMAN ALABİLİR, BEKLENİYOR...";
             }
         }, 8000);
 
-        // MAVİ EKRANI ÖRTME ZAMANLAYICISI: 15 saniye sonra örtüyü kaldır.
-        // WebAssembly dosyalarının ortalama indirilme süresi baz alınmıştır.
+        
         setTimeout(function() {
             loadingScreen.style.transition = 'opacity 0.8s ease';
             loadingScreen.style.opacity = '0';
@@ -140,7 +138,7 @@
             
         }, 15000);
 
-        // Mobil Cihaz Kontrolü
+       
         if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             document.body.classList.add('mobile');
         }
